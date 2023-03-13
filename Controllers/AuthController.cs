@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -14,7 +15,7 @@ namespace HouseStoreApi.controllers;
 [Route("api/[Controller]")]
 public class AuthController : ControllerBase {
 
-    
+    public static CustomerRegisterDto user=new CustomerRegisterDto();
     private readonly ILogger<AuthController> _logger;
     private readonly JwtConfiguration _jwtConfiguration;
     private readonly CustomersService _customerServices;
@@ -32,15 +33,19 @@ public class AuthController : ControllerBase {
     public async Task<ActionResult<List<Customer>>> Get() { return Ok(await _customerServices.GetAsync());}
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] Customer user){
+     public IActionResult Login([FromBody] Customer request){
+        if(user.fullName!=request.fullName){
+            return BadRequest("user is not found");}
+            return Ok("successfull");
       
-         if( user!=null)
-         {  
-        var token = GenerateToken(user);
-        return Ok(token);
-        }
-        return NotFound("user is not found");
-    }
+    //      if( user!=null)
+    //      {  
+    //     var token = GenerateToken(user);
+    //     return Ok(token);
+    //     }
+    //     return NotFound("user is not found");
+     }
+    
    
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] CustomerRegisterDto userDto){

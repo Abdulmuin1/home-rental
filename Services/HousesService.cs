@@ -32,6 +32,7 @@ public class HousesService
         await _housesCollection.InsertOneAsync(newHouse);
 
     public async Task UpdateAsync(string id, House updatedHouse) =>
+
         await _housesCollection.ReplaceOneAsync(x => x.Id == id, updatedHouse);
 
     public async Task RemoveAsync(string id) =>

@@ -19,7 +19,7 @@ public class HousesController : ControllerBase
 
     }
         
-    [HttpGet]
+    [HttpGet,AllowAnonymous]
     public async Task<List<House>> Get() =>
         await _housesService.GetAsync();
     
@@ -51,14 +51,14 @@ public class HousesController : ControllerBase
     [HttpPut("{id:length(24)}")]
     public async Task<IActionResult> Update(string id, House updatedHouse)
     {
-        var book = await _housesService.GetAsync(id);
+        var house = await _housesService.GetAsync(id);
 
-        if (book is null)
+        if (house is null)
         {
             return NotFound();
         }
 
-        updatedHouse.Id = book.Id;
+        updatedHouse.Id = house.Id;
 
         await _housesService.UpdateAsync(id, updatedHouse);
 
